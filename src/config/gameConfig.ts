@@ -43,7 +43,7 @@ export const GAME_CONFIG = {
     (import.meta.env.VITE_WS_BASE_URL as string | undefined)?.trim() ||
     "ws://localhost:8080",
 
-  ngrokSkipBrowserWarningHeaderValue: "",
+  ngrokSkipBrowserWarningHeaderValue: "true",
 },
 
   room: {

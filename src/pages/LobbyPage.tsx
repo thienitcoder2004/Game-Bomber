@@ -169,16 +169,6 @@ export default function LobbyPage() {
               </Button>
 
               <Button
-                onClick={() => navigate("/history")}
-                style={{
-                  background: "linear-gradient(180deg, #a855f7, #7e22ce)",
-                  boxShadow: "0 12px 28px rgba(126,34,206,0.30)",
-                }}
-              >
-                Xem lịch sử đấu
-              </Button>
-
-              <Button
                 onClick={() => navigate("/friends")}
                 style={{
                   background: "linear-gradient(180deg, #06b6d4, #0891b2)",
@@ -202,6 +192,7 @@ export default function LobbyPage() {
 
               <Button
                 onClick={() => {
+                  alert("Bạn có chắc muốn đăng xuất không?");
                   logout();
                   navigate("/login");
                 }}

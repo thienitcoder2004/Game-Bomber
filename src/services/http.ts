@@ -21,12 +21,9 @@ export async function apiFetch<T>(
 
   if (useAuth) {
     const token = getStoredToken();
-
-    if (!token) {
-      throw new Error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
     }
-
-    headers.set("Authorization", `Bearer ${token}`);
   }
 
   const response = await fetch(`${API_BASE}${path}`, {
@@ -38,10 +35,9 @@ export async function apiFetch<T>(
   const data = text ? JSON.parse(text) : null;
 
   if (!response.ok) {
-    if (response.status === 401 || response.status === 403) {
+    if (response.status === 401) {
       clearAuthStorage();
     }
-
     throw new Error(data?.message ?? "Có lỗi xảy ra");
   }
 
