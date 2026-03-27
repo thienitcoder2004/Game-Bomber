@@ -10,12 +10,18 @@ import { setStoredAuthUser } from "../utils/storage";
 
 export default function CharacterSelectPage() {
   const navigate = useNavigate();
-  const { profile, loading } = useAuth();
+  const { profile, loading, token } = useAuth();
 
   const [characterName, setCharacterName] = useState("");
   const [gender, setGender] = useState<"MALE" | "FEMALE">("MALE");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (!loading && !token) {
+      navigate("/login", { replace: true });
+    }
+  }, [loading, token, navigate]);
 
   useEffect(() => {
     if (!profile) return;
@@ -24,16 +30,19 @@ export default function CharacterSelectPage() {
     setGender((profile.gender as "MALE" | "FEMALE") || "MALE");
   }, [profile]);
 
-  // Mã avatar lưu xuống backend
   const avatarCode = gender === "MALE" ? "male-default" : "female-default";
 
-  // Ảnh preview ngoài màn chọn nhân vật
-  // Bạn có thể đổi sang ảnh khác nếu muốn
   const previewImage = useMemo(() => {
     return gender === "MALE" ? "/images/hinh1.png" : "/images/nuhinh1.png";
   }, [gender]);
 
   const onSave = async () => {
+    if (!token) {
+      setMessage("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
+      navigate("/login", { replace: true });
+      return;
+    }
+
     setSaving(true);
     setMessage("");
 
